@@ -5,9 +5,12 @@
     xmlns:local="using:GUIVideo"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Height="350" Width="525" Name="Video_Editor">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ListView Height="306" Margin="10,34,382,0" VerticalAlignment="Top"/>
+        <Button Content="Button" HorizontalAlignment="Right" Margin="0,312,289,0" VerticalAlignment="Top" Width="88" Height="32"/>
+        <Button Content="Button" HorizontalAlignment="Right" Margin="0,312,196,6" VerticalAlignment="Stretch" Width="88"/>
 
     </Grid>
 </Page>
