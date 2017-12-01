@@ -42,37 +42,14 @@ namespace GUIVideo
 
         }
 
-        private void PopulateVideoList(string currentFolderPath)
-        {
-            videoList.Items.Clear();
-
-            string[] files = Directory.GetFiles(currentFolderPath);
-            foreach (string file in files)
-            {
-
-                string fileName = Path.GetFileNameWithoutExtension(file);
-                ListViewItem item = new ListViewItem();
-                item.Name = fileName;
-                item.Tag = file;
-
-
-                videoList.Items.Add(item);
-
-            }
-        }
-
         //https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-listing-files-and-folders
         private async void BuildPlaylists()
         {
             IReadOnlyList<IStorageItem> itemsList = await videosFolder.GetItemsAsync();
 
             foreach (var item in itemsList)
-            {
                 if (item is StorageFolder)
-                {
                     playList.Items.Add(item.Name);
-                }
-            }
         }
 
         //https://docs.microsoft.com/en-us/uwp/api/windows.storage.storagefolder
@@ -87,9 +64,14 @@ namespace GUIVideo
             IReadOnlyList<StorageFile> filesInFolder = await results.GetFilesAsync();
             foreach(StorageFile item in filesInFolder)
             {
-                videoList.Items.Add(item.Name);
+                string name = item.Name;
+                name = name.Substring(0, name.Length - 4);
+                videoList.Items.Add(name);
             }
-            
+        }
+
+        private void videoList_ItemClick(object sender, ItemClickEventArgs e)
+        {
 
         }
     }
