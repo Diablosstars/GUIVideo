@@ -5,7 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -24,10 +26,23 @@ namespace GUIVideo
     /// </summary>
     public sealed partial class VideoPlayer : Page
     {
-       // MediaPlayer mediaPlayer = new MediaPlayer();
+        private StorageFile Selected;
+
         public VideoPlayer()
         {
             this.InitializeComponent();
+        }
+        private async void Initialize_Media()
+        {
+            var stream = await Selected.OpenAsync(Windows.Storage.FileAccessMode.Read);
+            mediaPlayer.SetSource(stream, Selected.ContentType);
+
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            Selected = (StorageFile)e.Parameter;
+            Initialize_Media();
         }
     }
 }

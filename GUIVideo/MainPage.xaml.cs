@@ -16,31 +16,33 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace GUIVideo
 {
 
     public sealed partial class MainPage : Page
     {
-        private ObservableCollection<string> _items = new ObservableCollection<string>();
         StorageFolder videosFolder = KnownFolders.VideosLibrary;
+        //VideoPlayer videoPlayer = new VideoPlayer();
 
         public MainPage()
         {
             this.InitializeComponent();
             BuildPlaylists();
+            this.playButton.IsEnabled = false;
 
         }
-        public ObservableCollection<string> Items
+
+        private async void Start_Media()
         {
-            get { return this._items; }
+            StorageFolder storageFolder = await KnownFolders.VideosLibrary.GetFolderAsync(playList.SelectedItem.ToString());
+            var results = await storageFolder.TryGetItemAsync(videoList.SelectedItem.ToString() + ".mp4");
+
+            StorageFile file = (StorageFile)results;
+
+            this.Frame.Navigate(typeof(VideoPlayer), file);
         }
 
-        private void Open_MediaPlayer(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         //https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-listing-files-and-folders
         private async void BuildPlaylists()
@@ -58,6 +60,7 @@ namespace GUIVideo
         private async void playList_ItemClick(object sender, ItemClickEventArgs e)
         {
             videoList.Items.Clear();
+            this.playButton.IsEnabled = false;
             StorageFolder storageFolder = await KnownFolders.VideosLibrary.GetFolderAsync(e.ClickedItem.ToString());
             StorageFileQueryResult results = storageFolder.CreateFileQuery();
 
@@ -72,7 +75,17 @@ namespace GUIVideo
 
         private void videoList_ItemClick(object sender, ItemClickEventArgs e)
         {
+            this.playButton.IsEnabled = true;
+        }
 
+        private void videoList_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            Start_Media();
+        }
+
+        private void playButton_Click(object sender, RoutedEventArgs e)
+        {
+            Start_Media();
         }
     }
 }
