@@ -42,10 +42,24 @@ namespace GUIVideo
 
         }
 
-        //private async void PopulateVideoList(IStorageItem currentList)
-        //{
+        private void PopulateVideoList(string currentFolderPath)
+        {
+            videoList.Items.Clear();
 
-        //}
+            string[] files = Directory.GetFiles(currentFolderPath);
+            foreach (string file in files)
+            {
+
+                string fileName = Path.GetFileNameWithoutExtension(file);
+                ListViewItem item = new ListViewItem();
+                item.Name = fileName;
+                item.Tag = file;
+
+
+                videoList.Items.Add(item);
+
+            }
+        }
 
         //https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-listing-files-and-folders
         private async void BuildPlaylists()
@@ -57,10 +71,26 @@ namespace GUIVideo
                 if (item is StorageFolder)
                 {
                     playList.Items.Add(item.Name);
-                  //  PopulateVideoList(item);
                 }
-
             }
+        }
+
+        //https://docs.microsoft.com/en-us/uwp/api/windows.storage.storagefolder
+        //https://stackoverflow.com/questions/45866872/get-all-files-inside-a-specific-folder-in-a-library-with-uwp
+        //Péter Bozsó
+        private async void playList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            videoList.Items.Clear();
+            StorageFolder storageFolder = await KnownFolders.VideosLibrary.GetFolderAsync(e.ClickedItem.ToString());
+            StorageFileQueryResult results = storageFolder.CreateFileQuery();
+
+            IReadOnlyList<StorageFile> filesInFolder = await results.GetFilesAsync();
+            foreach(StorageFile item in filesInFolder)
+            {
+                videoList.Items.Add(item.Name);
+            }
+            
+
         }
     }
 }
