@@ -39,7 +39,6 @@ namespace GUIVideo
             var results = await storageFolder.TryGetItemAsync(videoList.SelectedItem.ToString() + ".mp4");
 
             StorageFile file = (StorageFile)results;
-
             this.Frame.Navigate(typeof(VideoPlayer), file);
         }
 

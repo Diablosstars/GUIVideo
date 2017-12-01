@@ -34,9 +34,9 @@ namespace GUIVideo
         }
         private async void Initialize_Media()
         {
+            //https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-reading-and-writing-files
             var stream = await Selected.OpenAsync(Windows.Storage.FileAccessMode.Read);
             mediaPlayer.SetSource(stream, Selected.ContentType);
-
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
