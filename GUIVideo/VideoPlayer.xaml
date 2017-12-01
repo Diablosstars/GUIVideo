@@ -8,10 +8,13 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-<MediaElement x:Name="mediaPlayer"
-                    Width="Auto"
-              Height="Auto"
-                    AutoPlay="False"
-                    AreTransportControlsEnabled="True"/>
+        <MediaElement x:Name="mediaPlayer" Width="Auto" Height="Auto" AutoPlay="False" AreTransportControlsEnabled="True">
+            <MediaElement.TransportControls>
+                 <!--https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/custom-transport-controls
+                    to be continued
+                -->
+                <MediaTransportControls IsStopButtonVisible="True" IsStopEnabled="True" IsZoomButtonVisible="False" IsCompact="True" />
+            </MediaElement.TransportControls>
+        </MediaElement>
     </Grid>
 </Page>
