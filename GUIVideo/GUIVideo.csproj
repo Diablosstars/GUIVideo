@@ -95,6 +95,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewPlayListDialog.xaml.cs">
+      <DependentUpon>NewPlayListDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VideoPlayer.xaml.cs">
       <DependentUpon>VideoPlayer.xaml</DependentUpon>
     </Compile>
@@ -124,6 +127,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="NewPlayListDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="VideoPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,24 @@
+﻿<ContentDialog
+    x:Class="GUIVideo.NewPlayListDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GUIVideo"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title=""
+    PrimaryButtonText="Ok"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid Height="77" Width="247">
+        <TextBlock HorizontalAlignment="Left" Margin="27,10,-22,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="242">
+            <Run Foreground="White" FontSize="12.6666666666667" Text="Please type  the new playlist name.">
+
+            </Run>
+        </TextBlock>
+        <TextBox x:Name="playListText"  HorizontalAlignment="Left" Margin="67,45,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="9" Width="120"/>
+
+    </Grid>
+</ContentDialog>

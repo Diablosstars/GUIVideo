@@ -9,7 +9,20 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ListView x:Name="playList"  Height="306" Margin="0,34,341,0" VerticalAlignment="Top" SelectionMode="Single" 
                   ItemClick="playList_ItemClick" 
-                  IsItemClickEnabled="True"/>
+                  IsItemClickEnabled="True"
+                  RightTapped="playList_RightTapped">
+            <!-- https://stackoverflow.com/questions/36741757/uwp-listview-item-context-menu 
+             Grace Feng-->
+            <ListView.Resources>
+                <MenuFlyout x:Name="playListMenuFlyout">
+                    <MenuFlyoutItem x:Name="New_PlayList" Text="New" Click="New_PlayList_Click"/>
+                    <MenuFlyoutItem x:Name="Rename_Playlist" Text="Rename" Click="Rename_Playlist_Click"/>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutItem x:Name="Delete_PlayList" Text="Delete" Click="Delete_PlayList_Click"/>
+                    
+                </MenuFlyout>
+            </ListView.Resources>
+        </ListView>
 
         <Button x:Name="playButton"  Content="Play" HorizontalAlignment="Right" Margin="0,312,248,0" VerticalAlignment="Top" Width="88" Height="32" 
                 Click="playButton_Click"/>
