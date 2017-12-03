@@ -26,7 +26,7 @@
         </SplitView.Pane>
         <SplitView.Content>
             <RelativePanel Background="Black">
-                <ListView x:Name="playList"  MaxHeight="700" MinHeight="300" RelativePanel.AlignLeftWithPanel="True" SelectionMode="Single"  Width="500" 
+                <ListView x:Name="playList"  MaxHeight="700" MinHeight="300" RelativePanel.AlignLeftWithPanel="True" AllowDrop="True" DragOver="playList_DragOver" Drop="playList_Drop" SelectionMode="Single"  Width="500" 
                           ItemClick="playList_ItemClick" 
                           IsItemClickEnabled="True" RenderTransformOrigin="0.497,0.488" RightTapped="playList_RightTapped" DoubleTapped="playList_DoubleTapped">
                     <ListView.Resources>
@@ -48,7 +48,7 @@
                 <Button x:Name="playButton"  Content="Play"  RelativePanel.Below="playList"  Width="257" Height="104" 
                         Click="playButton_Click" />
 
-                <ListView x:Name="videoList" VerticalAlignment="Top"  SelectionMode="Single" MinHeight="300" MaxHeight="700"
+                <ListView x:Name="videoList" VerticalAlignment="Top" CanDragItems="True" DragItemsStarting="videoList_DragItemsStarting" SelectionMode="Single" MinHeight="300" MaxHeight="700"
                           HorizontalContentAlignment="Stretch" RelativePanel.AlignRightWithPanel="True" RelativePanel.RightOf="playList"
                           ItemClick="videoList_ItemClick" 
                           IsItemClickEnabled="True" 

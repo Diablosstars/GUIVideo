@@ -128,7 +128,7 @@ namespace GUIVideo
 
             }
         }
-#endregion
+        #endregion
 
         #region PlayList Menu
 
@@ -137,7 +137,7 @@ namespace GUIVideo
         private void playList_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             ListView listView = (ListView)sender;
-            if(playList.SelectedItem == null)
+            if (playList.SelectedItem == null)
             {
                 Delete_PlayList.IsEnabled = false;
                 Rename_Playlist.IsEnabled = false;
@@ -237,7 +237,7 @@ namespace GUIVideo
                 deleteDialog.Hide();
 
                 BuildVideoList();
-                
+
             }
             else
             {
@@ -275,7 +275,25 @@ namespace GUIVideo
                 await video.RenameAsync(rename.result + ".mp4");
             }
 
-    BuildVideoList();
+            BuildVideoList();
+        }
+
+        //http://www.shenchauhan.com/blog/2015/8/23/drag-and-drop-in-uwp
+
+        private void playList_DragOver(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
+        }
+
+        private void playList_Drop(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void videoList_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
+        {
+                e.Data.SetText(e.Items[0].ToString() + ".mp4");
+                e.Data.RequestedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
         }
     }
 }
