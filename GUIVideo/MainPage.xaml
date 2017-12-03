@@ -7,7 +7,7 @@
     mc:Ignorable="d" Height="350" Width="525" Name="Video_Editor">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ListView x:Name="playList"  Height="306" Margin="0,34,341,0" VerticalAlignment="Top" SelectionMode="Single" 
+        <ListView x:Name="playList"  Height="306" Margin="0,0,341,10" VerticalAlignment="Bottom" SelectionMode="Single" 
                   ItemClick="playList_ItemClick" 
                   IsItemClickEnabled="True"
                   RightTapped="playList_RightTapped">
@@ -19,19 +19,27 @@
                     <MenuFlyoutItem x:Name="Rename_Playlist" Text="Rename" Click="Rename_Playlist_Click"/>
                     <MenuFlyoutSeparator></MenuFlyoutSeparator>
                     <MenuFlyoutItem x:Name="Delete_PlayList" Text="Delete" Click="Delete_PlayList_Click"/>
-                    
+
                 </MenuFlyout>
             </ListView.Resources>
         </ListView>
 
-        <Button x:Name="playButton"  Content="Play" HorizontalAlignment="Right" Margin="0,312,248,0" VerticalAlignment="Top" Width="88" Height="32" 
-                Click="playButton_Click"/>
+        <Button x:Name="playButton"  Content="Play" HorizontalAlignment="Left" Margin="189,0,0,6" VerticalAlignment="Bottom" Width="88" 
+                Click="playButton_Click" Height="32"/>
 
-        <ListView x:Name="videoList" Height="273" Margin="189,0,0,43" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="326" SelectionMode="Single" 
+        <ListView x:Name="videoList" Height="273" Margin="189,34,0,0" VerticalAlignment="Top" SelectionMode="Single" 
                   ItemClick="videoList_ItemClick" 
                   IsItemClickEnabled="True" 
                   IsDoubleTapEnabled="True" 
-                  DoubleTapped="videoList_DoubleTapped"/>
+                  DoubleTapped="videoList_DoubleTapped" HorizontalAlignment="Left" Width="326">
+            <ListView.Resources>
+                <MenuFlyout x:Name="videoListMenuFlyout">
+                    <MenuFlyoutItem x:Name="delete_Video" Text="New" Click="Delete_Video_Click"/>
+
+
+                </MenuFlyout>
+            </ListView.Resources>
+        </ListView>
 
     </Grid>
 </Page>

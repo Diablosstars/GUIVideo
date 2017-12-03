@@ -30,8 +30,9 @@ namespace GUIVideo
             this.InitializeComponent();
             BuildPlaylists();
             this.playButton.IsEnabled = false;
-
         }
+
+        #region Play Media
 
         private async void Start_Media()
         {
@@ -41,7 +42,22 @@ namespace GUIVideo
             StorageFile file = (StorageFile)results;
             this.Frame.Navigate(typeof(VideoPlayer), file);
         }
+        private void videoList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            this.playButton.IsEnabled = true;
+        }
 
+        private void videoList_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            Start_Media();
+        }
+
+        private void playButton_Click(object sender, RoutedEventArgs e)
+        {
+            Start_Media();
+        }
+
+        #endregion
 
         //https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-listing-files-and-folders
         private async void BuildPlaylists()
@@ -73,20 +89,7 @@ namespace GUIVideo
             }
         }
 
-        private void videoList_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            this.playButton.IsEnabled = true;
-        }
-
-        private void videoList_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
-        {
-            Start_Media();
-        }
-
-        private void playButton_Click(object sender, RoutedEventArgs e)
-        {
-            Start_Media();
-        }
+        #region PlayList Menu
 
         //https://stackoverflow.com/questions/36741757/uwp-listview-item-context-menu 
         //     Grace Feng
@@ -105,8 +108,6 @@ namespace GUIVideo
             }
             playListMenuFlyout.ShowAt(listView, e.GetPosition(listView));
         }
-
-
         //https://docs.microsoft.com/en-us/uwp/api/windows.storage.storagefolder
         private async void New_PlayList_Click(object sender, RoutedEventArgs e)
         {
@@ -156,6 +157,31 @@ namespace GUIVideo
                 StorageFolder folder = await videosFolder.GetFolderAsync(playList.SelectedItem.ToString());
                 await folder.RenameAsync(newPlayList.result);
                 BuildPlaylists();
+            }
+        }
+        #endregion
+
+        private async void Delete_Video_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog deleteDialog = new ContentDialog()
+            {
+                Title = "Delete video permanently?",
+                SecondaryButtonText = "Cancel",
+                PrimaryButtonText = "Delete"
+            };
+            ContentDialogResult result = await deleteDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                StorageFolder playlist = await videosFolder.GetFolderAsync(playList.SelectedItem.ToString());
+                StorageFile video = await playlist.GetFileAsync(videoList.SelectedItem.ToString());
+                await video.DeleteAsync();
+                deleteDialog.Hide();
+                BuildPlaylists();
+            }
+            else
+            {
+                deleteDialog.Hide();
             }
         }
     }
