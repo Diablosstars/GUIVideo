@@ -4,46 +4,67 @@
     xmlns:local="using:GUIVideo"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Height="350" Width="525" Name="Video_Editor">
+    mc:Ignorable="d"  Name="Video_Editor">
+    <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay"  IsPaneOpen="False" 
+               CompactPaneLength="50" OpenPaneLength="150">
+        <SplitView.Pane>
+            <StackPanel Background="DarkGray" Margin="0,0,-2,0">
+                <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
+                        Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="MenuButton1" FontFamily="Segoe MDL2 Assets" Content="&#xE710;"
+                            Width="50" Height="50" Background="Transparent" Click="New_PlayList_Click"/>
+                    <TextBlock Text="New Folder" FontSize="18" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Content="&#xE10F;"
+                            Width="50" Height="50" Background="Transparent" Click="MenuButton2_Click"/>
+                    <TextBlock Text="About" FontSize="18" VerticalAlignment="Center" />
+                </StackPanel>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ListView x:Name="playList"  Height="306" Margin="0,0,341,10" VerticalAlignment="Bottom" SelectionMode="Single" 
-                  ItemClick="playList_ItemClick" 
-                  IsItemClickEnabled="True"
-                  RightTapped="playList_RightTapped">
-            <!-- https://stackoverflow.com/questions/36741757/uwp-listview-item-context-menu 
-             Grace Feng-->
-            <ListView.Resources>
-                <MenuFlyout x:Name="playListMenuFlyout">
-                    <MenuFlyoutItem x:Name="New_PlayList" Text="New" Click="New_PlayList_Click"/>
-                    <MenuFlyoutItem x:Name="Rename_Playlist" Text="Rename" Click="Rename_Playlist_Click"/>
-                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                    <MenuFlyoutItem x:Name="Delete_PlayList" Text="Delete" Click="Delete_PlayList_Click"/>
+            </StackPanel>
+        </SplitView.Pane>
+        <SplitView.Content>
+            <RelativePanel Background="Black">
+                <ListView x:Name="playList"  MaxHeight="700" MinHeight="300" RelativePanel.AlignLeftWithPanel="True" SelectionMode="Single"  Width="500" 
+                          ItemClick="playList_ItemClick" 
+                          IsItemClickEnabled="True" RenderTransformOrigin="0.497,0.488" RightTapped="playList_RightTapped" DoubleTapped="playList_DoubleTapped">
+                    <ListView.Resources>
+                        <MenuFlyout x:Name="playListMenuFlyout">
+                            <MenuFlyoutItem x:Name="New_PlayList" Text="New" Click="New_PlayList_Click"/>
+                            <MenuFlyoutItem x:Name="Rename_Playlist" Text="Rename" Click="Rename_Playlist_Click"/>
+                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                            <MenuFlyoutItem x:Name="Delete_PlayList" Text="Delete" Click="Delete_PlayList_Click"/>
 
-                </MenuFlyout>
-            </ListView.Resources>
-        </ListView>
+                        </MenuFlyout>
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
 
-        <Button x:Name="playButton"  Content="Play" HorizontalAlignment="Left" Margin="189,0,0,6" VerticalAlignment="Bottom" Width="88" 
-                Click="playButton_Click" Height="32"/>
+                <Button x:Name="playButton"  Content="Play"  RelativePanel.Below="playList"  Width="257" Height="104" 
+                        Click="playButton_Click" />
 
-        <ListView x:Name="videoList" Height="273" Margin="189,34,0,0" VerticalAlignment="Top" SelectionMode="Single" 
-                  ItemClick="videoList_ItemClick" 
-                  IsItemClickEnabled="True" 
-                  IsDoubleTapEnabled="True" 
-                  DoubleTapped="videoList_DoubleTapped" HorizontalAlignment="Left" Width="326"
-                  RightTapped="videoList_RightTapped">
-            <ListView.Resources>
-                <MenuFlyout x:Name="videoListMenuFlyout">
-                    <MenuFlyoutItem x:Name="rename_Video" Text="Rename" Click="rename_Video_Click"/>
-                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                    <MenuFlyoutItem x:Name="delete_Video" Text="Delete" Click="Delete_Video_Click"/>
-                    
+                <ListView x:Name="videoList" VerticalAlignment="Top"  SelectionMode="Single" MinHeight="300" MaxHeight="700"
+                          HorizontalContentAlignment="Stretch" RelativePanel.AlignRightWithPanel="True" RelativePanel.RightOf="playList"
+                          ItemClick="videoList_ItemClick" 
+                          IsItemClickEnabled="True" 
+                          IsDoubleTapEnabled="True" 
+                          DoubleTapped="videoList_DoubleTapped" 
+                          RightTapped="videoList_RightTapped">
+                    <ListView.Resources>
+                        <MenuFlyout x:Name="videoListMenuFlyout">
+                            <MenuFlyoutItem x:Name="rename_Video" Text="Rename" Click="rename_Video_Click"/>
+                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                            <MenuFlyoutItem x:Name="delete_Video" Text="Delete" Click="Delete_Video_Click"/>
+                        </MenuFlyout>
+                    </ListView.Resources>
+                </ListView>
+            </RelativePanel>
+        </SplitView.Content>
+    </SplitView>
 
-
-                </MenuFlyout>
-            </ListView.Resources>
-        </ListView>
-
-    </Grid>
 </Page>

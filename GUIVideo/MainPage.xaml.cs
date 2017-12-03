@@ -24,6 +24,7 @@ namespace GUIVideo
     {
         StorageFolder videosFolder = KnownFolders.VideosLibrary;
         //VideoPlayer videoPlayer = new VideoPlayer();
+        private StorageFolder currentFolder = KnownFolders.VideosLibrary;
 
         public MainPage()
         {
@@ -32,11 +33,25 @@ namespace GUIVideo
             this.playButton.IsEnabled = false;
         }
 
+        #region HamburgerMenu
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
+        }
+        private async void MenuButton2_Click(object sender, RoutedEventArgs e)
+        {
+            AboutDialog aboutDialog = new AboutDialog();
+            await aboutDialog.ShowAsync();
+        }
+
+        #endregion
+
+
         #region Play Media
 
         private async void Start_Media()
         {
-            StorageFolder storageFolder = await KnownFolders.VideosLibrary.GetFolderAsync(playList.SelectedItem.ToString());
+            StorageFolder storageFolder = await currentFolder.GetFolderAsync(playList.SelectedItem.ToString());
             var results = await storageFolder.TryGetItemAsync(videoList.SelectedItem.ToString() + ".mp4");
 
             StorageFile file = (StorageFile)results;
@@ -79,7 +94,7 @@ namespace GUIVideo
         {
             videoList.Items.Clear();
             this.playButton.IsEnabled = false;
-            StorageFolder storageFolder = await KnownFolders.VideosLibrary.GetFolderAsync(playList.SelectedItem.ToString());
+            StorageFolder storageFolder = await currentFolder.GetFolderAsync(playList.SelectedItem.ToString());
             StorageFileQueryResult results = storageFolder.CreateFileQuery();
 
             IReadOnlyList<StorageFile> filesInFolder = await results.GetFilesAsync();
@@ -94,15 +109,23 @@ namespace GUIVideo
         {
             videoList.Items.Clear();
             this.playButton.IsEnabled = false;
-            StorageFolder storageFolder = await KnownFolders.VideosLibrary.GetFolderAsync(e.ClickedItem.ToString());
-            StorageFileQueryResult results = storageFolder.CreateFileQuery();
-
-            IReadOnlyList<StorageFile> filesInFolder = await results.GetFilesAsync();
-            foreach (StorageFile item in filesInFolder)
+            try
             {
-                string name = item.Name;
-                name = name.Substring(0, name.Length - 4);
-                videoList.Items.Add(name);
+                StorageFolder storageFolder = await currentFolder.GetFolderAsync(e.ClickedItem.ToString());
+                StorageFileQueryResult results = storageFolder.CreateFileQuery();
+
+                IReadOnlyList<StorageFile> filesInFolder = await results.GetFilesAsync();
+                foreach (StorageFile item in filesInFolder)
+                {
+                    string name = item.Name;
+                    name = name.Substring(0, name.Length - 4);
+                    videoList.Items.Add(name);
+                }
+            }
+            catch (Exception exception)
+            {
+                playList.SelectedIndex = 0;
+
             }
         }
 #endregion
@@ -136,7 +159,7 @@ namespace GUIVideo
             if (newPlayList.result == null) { }
             else
             {
-                StorageFolder newFolder = await videosFolder.CreateFolderAsync(newPlayList.result, CreationCollisionOption.FailIfExists);
+                StorageFolder newFolder = await currentFolder.CreateFolderAsync(newPlayList.result, CreationCollisionOption.FailIfExists);
                 BuildPlaylists();
             }
         }
@@ -154,7 +177,7 @@ namespace GUIVideo
 
             if (result == ContentDialogResult.Primary)
             {
-                StorageFolder folder = await videosFolder.GetFolderAsync(playList.SelectedItem.ToString());
+                StorageFolder folder = await currentFolder.GetFolderAsync(playList.SelectedItem.ToString());
                 await folder.DeleteAsync();
                 deleteDialog.Hide();
                 BuildPlaylists();
@@ -173,10 +196,22 @@ namespace GUIVideo
             if (newPlayList.result == null) { }
             else
             {
-                StorageFolder folder = await videosFolder.GetFolderAsync(playList.SelectedItem.ToString());
+                StorageFolder folder = await currentFolder.GetFolderAsync(playList.SelectedItem.ToString());
                 await folder.RenameAsync(newPlayList.result);
                 BuildPlaylists();
             }
+        }
+
+        private async void playList_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            StorageFolder selectedFolder = await currentFolder.GetFolderAsync(playList.SelectedItem.ToString());
+            playList.Items.Clear();
+            currentFolder = selectedFolder;
+            IReadOnlyList<IStorageItem> itemsList = await selectedFolder.GetItemsAsync();
+
+            foreach (var item in itemsList)
+                if (item is StorageFolder)
+                    playList.Items.Add(item.Name);
         }
         #endregion
 
