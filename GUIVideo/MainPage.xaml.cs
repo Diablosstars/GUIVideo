@@ -59,6 +59,8 @@ namespace GUIVideo
 
         #endregion
 
+        #region Build Lists
+
         //https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-listing-files-and-folders
         private async void BuildPlaylists()
         {
@@ -73,6 +75,21 @@ namespace GUIVideo
         //https://docs.microsoft.com/en-us/uwp/api/windows.storage.storagefolder
         //https://stackoverflow.com/questions/45866872/get-all-files-inside-a-specific-folder-in-a-library-with-uwp
         //Péter Bozsó
+        private async void BuildVideoList()
+        {
+            videoList.Items.Clear();
+            this.playButton.IsEnabled = false;
+            StorageFolder storageFolder = await KnownFolders.VideosLibrary.GetFolderAsync(playList.SelectedItem.ToString());
+            StorageFileQueryResult results = storageFolder.CreateFileQuery();
+
+            IReadOnlyList<StorageFile> filesInFolder = await results.GetFilesAsync();
+            foreach (StorageFile item in filesInFolder)
+            {
+                string name = item.Name;
+                name = name.Substring(0, name.Length - 4);
+                videoList.Items.Add(name);
+            }
+        }
         private async void playList_ItemClick(object sender, ItemClickEventArgs e)
         {
             videoList.Items.Clear();
@@ -88,6 +105,7 @@ namespace GUIVideo
                 videoList.Items.Add(name);
             }
         }
+#endregion
 
         #region PlayList Menu
 
@@ -108,6 +126,7 @@ namespace GUIVideo
             }
             playListMenuFlyout.ShowAt(listView, e.GetPosition(listView));
         }
+
         //https://docs.microsoft.com/en-us/uwp/api/windows.storage.storagefolder
         private async void New_PlayList_Click(object sender, RoutedEventArgs e)
         {
@@ -161,6 +180,10 @@ namespace GUIVideo
         }
         #endregion
 
+        #region VideoList Menu
+
+
+
         private async void Delete_Video_Click(object sender, RoutedEventArgs e)
         {
             ContentDialog deleteDialog = new ContentDialog()
@@ -174,15 +197,53 @@ namespace GUIVideo
             if (result == ContentDialogResult.Primary)
             {
                 StorageFolder playlist = await videosFolder.GetFolderAsync(playList.SelectedItem.ToString());
-                StorageFile video = await playlist.GetFileAsync(videoList.SelectedItem.ToString());
+                StorageFile video = await playlist.GetFileAsync(videoList.SelectedItem.ToString() + ".mp4");
                 await video.DeleteAsync();
                 deleteDialog.Hide();
-                BuildPlaylists();
+
+                BuildVideoList();
+                
             }
             else
             {
                 deleteDialog.Hide();
             }
         }
+
+        private void videoList_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            ListView listView = (ListView)sender;
+            if (videoList.SelectedItem == null)
+            {
+                delete_Video.IsEnabled = false;
+                rename_Video.IsEnabled = false;
+            }
+            else
+            {
+                delete_Video.IsEnabled = true;
+                rename_Video.IsEnabled = true;
+            }
+            videoListMenuFlyout.ShowAt(listView, e.GetPosition(listView));
+        }
+
+        private async void rename_Video_Click(object sender, RoutedEventArgs e)
+        {
+            StorageFolder playlist = await videosFolder.GetFolderAsync(playList.SelectedItem.ToString());
+            StorageFile video = await playlist.GetFileAsync(videoList.SelectedItem.ToString() + ".mp4");
+
+            NewPlayListDialog rename = new NewPlayListDialog();
+            await rename.ShowAsync();
+
+            if (rename.result == null) { }
+            else
+            {
+                await video.RenameAsync(rename.result + ".mp4");
+            }
+
+    BuildVideoList();
+        }
     }
 }
+
+
+#endregion

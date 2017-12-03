@@ -31,10 +31,14 @@
                   ItemClick="videoList_ItemClick" 
                   IsItemClickEnabled="True" 
                   IsDoubleTapEnabled="True" 
-                  DoubleTapped="videoList_DoubleTapped" HorizontalAlignment="Left" Width="326">
+                  DoubleTapped="videoList_DoubleTapped" HorizontalAlignment="Left" Width="326"
+                  RightTapped="videoList_RightTapped">
             <ListView.Resources>
                 <MenuFlyout x:Name="videoListMenuFlyout">
-                    <MenuFlyoutItem x:Name="delete_Video" Text="New" Click="Delete_Video_Click"/>
+                    <MenuFlyoutItem x:Name="rename_Video" Text="Rename" Click="rename_Video_Click"/>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutItem x:Name="delete_Video" Text="Delete" Click="Delete_Video_Click"/>
+                    
 
 
                 </MenuFlyout>
