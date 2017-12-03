@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="a3b2cbb2-033b-4751-8c2f-78c65a957ef6" Publisher="CN=wgan" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="a3b2cbb2-033b-4751-8c2f-78c65a957ef6" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="114652ea-f0f3-4f01-9aba-41432cd97e89" Publisher="CN=diabl" Version="1.0.0.0" />
+  <mp:PhoneIdentity PhoneProductId="114652ea-f0f3-4f01-9aba-41432cd97e89" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Video</DisplayName>
-    <PublisherDisplayName>wgan</PublisherDisplayName>
+    <DisplayName>GUIVideo</DisplayName>
+    <PublisherDisplayName>diabl</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -14,8 +14,8 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Video.App">
-      <uap:VisualElements DisplayName="Video" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Video" BackgroundColor="transparent">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="GUIVideo.App">
+      <uap:VisualElements DisplayName="Video Manager" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="GUIVideo" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

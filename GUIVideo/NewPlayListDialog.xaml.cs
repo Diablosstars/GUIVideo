@@ -14,9 +14,11 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+// https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.contentdialog
 
-namespace Video
+namespace GUIVideo
 {
+
     public sealed partial class NewPlayListDialog : ContentDialog
     {
         public string result { get; private set; }
@@ -27,7 +29,7 @@ namespace Video
 
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            if (playListText.Text == "")
+            if(playListText.Text == "")
             {
                 args.Cancel = true;
                 ContentDialog error = new ContentDialog()
