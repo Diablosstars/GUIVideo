@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="Video.App"
+    x:Class="GUIVideo.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Video"
-    RequestedTheme="Light">
+    xmlns:local="using:GUIVideo"
+    RequestedTheme="Dark">
 
 </Application>
