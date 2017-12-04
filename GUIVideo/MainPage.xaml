@@ -34,7 +34,7 @@
             <RelativePanel Background="Black">
                 <ListView x:Name="playList"  MaxHeight="700" MinHeight="300" RelativePanel.AlignLeftWithPanel="True" SelectionMode="Single"  Width="500" 
                           ItemClick="playList_ItemClick" 
-                          IsItemClickEnabled="True" RenderTransformOrigin="0.497,0.488" RightTapped="playList_RightTapped" DoubleTapped="playList_DoubleTapped">
+                          IsItemClickEnabled="True" RenderTransformOrigin="0.497,0.488" RightTapped="playList_RightTapped" DoubleTapped="playList_DoubleTapped" SelectionChanged="playList_SelectionChanged">
                     
    
                     <ListView.Resources>

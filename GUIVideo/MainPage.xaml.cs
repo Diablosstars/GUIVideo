@@ -26,7 +26,7 @@ namespace GUIVideo
         StorageFolder videosFolder = KnownFolders.VideosLibrary;
         //VideoPlayer videoPlayer = new VideoPlayer();
         private StorageFolder currentFolder = KnownFolders.VideosLibrary;
-
+        private int index = 0;
         public MainPage()
         {
             this.InitializeComponent();
@@ -34,7 +34,30 @@ namespace GUIVideo
             this.playButton.IsEnabled = false;
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            var composite = new ApplicationDataCompositeValue();
+            if (playList.SelectedItem != null)
+                composite["selected playlistitem"] = playList.SelectedIndex;
+            ApplicationData.Current.LocalSettings.Values["pageState"] = composite;
+        }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ApplicationDataCompositeValue composite;
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("pageState"))
+            {
+                composite =
+                    ApplicationData.Current.LocalSettings.Values["pageState"] as ApplicationDataCompositeValue;
+                if (Convert.ToInt32(composite["selected playlistitem"]) != -1)
+                {
+                    index = Convert.ToInt32(composite["selected playlistitem"]);
+                    
+                }
+            }
+           
+                
+        }
         #region HamburgerMenu
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
@@ -87,6 +110,7 @@ namespace GUIVideo
             foreach (var item in itemsList)
                 if (item is StorageFolder)
                     playList.Items.Add(item.Name);
+            playList.SelectedIndex = index;
         }
 
         //https://docs.microsoft.com/en-us/uwp/api/windows.storage.storagefolder
@@ -107,6 +131,31 @@ namespace GUIVideo
                 videoList.Items.Add(name);
             }
         }
+
+        private async void playList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            videoList.Items.Clear();
+            this.playButton.IsEnabled = false;
+            try
+            {
+                StorageFolder storageFolder = await currentFolder.GetFolderAsync(playList.SelectedItem.ToString());
+                StorageFileQueryResult results = storageFolder.CreateFileQuery();
+
+                IReadOnlyList<StorageFile> filesInFolder = await results.GetFilesAsync();
+                foreach (StorageFile item in filesInFolder)
+                {
+                    string name = item.Name;
+                    name = name.Substring(0, name.Length - 4);
+                    videoList.Items.Add(name);
+                }
+            }
+            catch (Exception exception)
+            {
+                BuildPlaylists();
+
+            }
+        }
+
         private async void playList_ItemClick(object sender, ItemClickEventArgs e)
         {
             videoList.Items.Clear();
@@ -322,8 +371,12 @@ namespace GUIVideo
             currentFolder = videosFolder;
             BuildPlaylists();
         }
+
+      
     }
 }
 
 
 #endregion
+
+
