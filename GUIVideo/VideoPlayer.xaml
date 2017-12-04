@@ -6,15 +6,30 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <MediaElement x:Name="mediaPlayer" Width="Auto" Height="Auto" AutoPlay="False" AreTransportControlsEnabled="True">
-            <MediaElement.TransportControls>
-                <!--https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/custom-transport-controls
+    <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay"  IsPaneOpen="False" 
+               CompactPaneLength="50" OpenPaneLength="150">
+        <SplitView.Pane>
+            <StackPanel Background="DarkGray" Margin="0,0,-2,0">
+                <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
+                        Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="Home" FontFamily="Segoe MDL2 Assets" Content="&#xE80F;"
+                            Width="50" Height="50" Background="Transparent" Click="Home_Click"></Button>
+                </StackPanel>
+            </StackPanel>
+          
+        </SplitView.Pane>
+        <SplitView.Content>
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <MediaElement x:Name="mediaPlayer" Width="Auto" Height="Auto" AutoPlay="False" AreTransportControlsEnabled="True">
+                    <MediaElement.TransportControls>
+                        <!--https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/custom-transport-controls
                     to be continued
                 -->
-                <MediaTransportControls IsStopButtonVisible="True" IsStopEnabled="True" IsZoomButtonVisible="False" IsCompact="True" />
-            </MediaElement.TransportControls>
-        </MediaElement>
-    </Grid>
+                        <MediaTransportControls IsStopButtonVisible="True" IsStopEnabled="True" IsZoomButtonVisible="False" IsCompact="True" />
+                    </MediaElement.TransportControls>
+                </MediaElement>
+            </Grid>
+        </SplitView.Content>
+    </SplitView>
 </Page>

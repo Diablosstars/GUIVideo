@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -32,6 +33,7 @@ namespace GUIVideo
             BuildPlaylists();
             this.playButton.IsEnabled = false;
         }
+
 
         #region HamburgerMenu
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
@@ -80,7 +82,7 @@ namespace GUIVideo
         private async void BuildPlaylists()
         {
             playList.Items.Clear();
-            IReadOnlyList<IStorageItem> itemsList = await videosFolder.GetItemsAsync();
+            IReadOnlyList<IStorageItem> itemsList = await currentFolder.GetItemsAsync();
 
             foreach (var item in itemsList)
                 if (item is StorageFolder)
@@ -124,11 +126,11 @@ namespace GUIVideo
             }
             catch (Exception exception)
             {
-                playList.SelectedIndex = 0;
+                BuildPlaylists();
 
             }
         }
-        #endregion
+#endregion
 
         #region PlayList Menu
 
@@ -137,7 +139,7 @@ namespace GUIVideo
         private void playList_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             ListView listView = (ListView)sender;
-            if (playList.SelectedItem == null)
+            if(playList.SelectedItem == null)
             {
                 Delete_PlayList.IsEnabled = false;
                 Rename_Playlist.IsEnabled = false;
@@ -237,7 +239,7 @@ namespace GUIVideo
                 deleteDialog.Hide();
 
                 BuildVideoList();
-
+                
             }
             else
             {
@@ -263,7 +265,7 @@ namespace GUIVideo
 
         private async void rename_Video_Click(object sender, RoutedEventArgs e)
         {
-            StorageFolder playlist = await videosFolder.GetFolderAsync(playList.SelectedItem.ToString());
+            StorageFolder playlist = await currentFolder.GetFolderAsync(playList.SelectedItem.ToString());
             StorageFile video = await playlist.GetFileAsync(videoList.SelectedItem.ToString() + ".mp4");
 
             NewPlayListDialog rename = new NewPlayListDialog();
@@ -275,25 +277,50 @@ namespace GUIVideo
                 await video.RenameAsync(rename.result + ".mp4");
             }
 
-            BuildVideoList();
+    BuildVideoList();
         }
 
-        //http://www.shenchauhan.com/blog/2015/8/23/drag-and-drop-in-uwp
 
-        private void playList_DragOver(object sender, DragEventArgs e)
+
+        private void PlayList_OnDragOver(object sender, DragEventArgs e)
         {
-            e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
+            e.AcceptedOperation = (e.DataView.Contains(StandardDataFormats.Text))
+                ? DataPackageOperation.Copy
+                : DataPackageOperation.None;
         }
 
-        private void playList_Drop(object sender, DragEventArgs e)
+        private async void PlayList_OnDrop(object sender, DragEventArgs e)
         {
-
+            if (e.DataView.Contains(StandardDataFormats.Text))
+            {
+                
+                String fileName, folderDirectory;
+                folderDirectory= currentFolder.Path+playList.SelectedItem.ToString();
+                var def = e.GetDeferral();
+                var s = await e.DataView.GetTextAsync();
+                var items = s.Split('\n');
+                foreach (var item in items)
+                {
+                    fileName = item;
+                }
+                
+                e.AcceptedOperation = DataPackageOperation.Copy;
+                def.Complete();
+            }
         }
+
+ 
 
         private void videoList_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
-                e.Data.SetText(e.Items[0].ToString() + ".mp4");
-                e.Data.RequestedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
+            e.Data.SetText(videoList.SelectedValue.ToString());
+            e.Data.RequestedOperation = DataPackageOperation.Copy;
+        }
+
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            currentFolder = videosFolder;
+            BuildPlaylists();
         }
     }
 }

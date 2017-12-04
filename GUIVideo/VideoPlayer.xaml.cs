@@ -50,5 +50,17 @@ namespace GUIVideo
             Selected = (StorageFile)e.Parameter;
             Initialize_Media();
         }
+
+        #region Hamburger Menus
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
+        }
+        #endregion
+
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(MainPage));
+        }
     }
 }
