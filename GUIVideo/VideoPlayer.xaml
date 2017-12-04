@@ -16,6 +16,10 @@
                     <Button x:Name="Home" FontFamily="Segoe MDL2 Assets" Content="&#xE80F;"
                             Width="50" Height="50" Background="Transparent" Click="Home_Click"></Button>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="Trim" FontFamily="Segoe MDL2 Assets" Content="&#xE8C6;"
+                            Width="50" Height="50" Background="Transparent"  ></Button>
+                </StackPanel>
             </StackPanel>
           
         </SplitView.Pane>
