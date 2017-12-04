@@ -16,6 +16,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Media.Editing;
+using Windows.Media.Core;
+using Windows.Media.Playback;
+using System.Threading.Tasks;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -28,6 +32,7 @@ namespace GUIVideo
     public sealed partial class VideoPlayer : Page
     {
         private StorageFile Selected;
+        private MediaComposition composition;
 
         public VideoPlayer()
         {

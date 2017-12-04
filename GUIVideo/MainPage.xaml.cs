@@ -104,13 +104,21 @@ namespace GUIVideo
         //https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-listing-files-and-folders
         private async void BuildPlaylists()
         {
+            
             playList.Items.Clear();
             IReadOnlyList<IStorageItem> itemsList = await currentFolder.GetItemsAsync();
 
             foreach (var item in itemsList)
                 if (item is StorageFolder)
                     playList.Items.Add(item.Name);
-            playList.SelectedIndex = index;
+            try
+            {
+                playList.SelectedIndex = index;
+            }
+            catch (Exception exception)
+            {
+                playList.SelectedIndex = 0;
+            }
         }
 
         //https://docs.microsoft.com/en-us/uwp/api/windows.storage.storagefolder
@@ -256,13 +264,9 @@ namespace GUIVideo
         private async void playList_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             StorageFolder selectedFolder = await currentFolder.GetFolderAsync(playList.SelectedItem.ToString());
-            playList.Items.Clear();
+            
             currentFolder = selectedFolder;
-            IReadOnlyList<IStorageItem> itemsList = await selectedFolder.GetItemsAsync();
-
-            foreach (var item in itemsList)
-                if (item is StorageFolder)
-                    playList.Items.Add(item.Name);
+            BuildPlaylists();
         }
         #endregion
 
