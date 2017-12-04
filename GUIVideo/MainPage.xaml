@@ -17,18 +17,26 @@
                     <TextBlock Text="New Folder" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Content="&#xE10F;"
+                    <Button x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Content="&#xE7C3;"
                             Width="50" Height="50" Background="Transparent" Click="MenuButton2_Click"/>
                     <TextBlock Text="About" FontSize="18" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="Home" FontFamily="Segoe MDL2 Assets" Content="&#xE80F;"
+                            Width="50" Height="50" Background="Transparent" Click="Home_Click" />
+                    <TextBlock Text="Home" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
 
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>
             <RelativePanel Background="Black">
-                <ListView x:Name="playList"  MaxHeight="700" MinHeight="300" RelativePanel.AlignLeftWithPanel="True" AllowDrop="True" DragOver="playList_DragOver" Drop="playList_Drop" SelectionMode="Single"  Width="500" 
+                <ListView x:Name="playList"  MaxHeight="700" MinHeight="300" RelativePanel.AlignLeftWithPanel="True" SelectionMode="Single"  Width="500" 
                           ItemClick="playList_ItemClick" 
                           IsItemClickEnabled="True" RenderTransformOrigin="0.497,0.488" RightTapped="playList_RightTapped" DoubleTapped="playList_DoubleTapped">
+                    
+   
                     <ListView.Resources>
                         <MenuFlyout x:Name="playListMenuFlyout">
                             <MenuFlyoutItem x:Name="New_PlayList" Text="New" Click="New_PlayList_Click"/>
@@ -48,13 +56,14 @@
                 <Button x:Name="playButton"  Content="Play"  RelativePanel.Below="playList"  Width="257" Height="104" 
                         Click="playButton_Click" />
 
-                <ListView x:Name="videoList" VerticalAlignment="Top" CanDragItems="True" DragItemsStarting="videoList_DragItemsStarting" SelectionMode="Single" MinHeight="300" MaxHeight="700"
+                <ListView x:Name="videoList" VerticalAlignment="Top"  SelectionMode="Single" MinHeight="300" MaxHeight="700"
                           HorizontalContentAlignment="Stretch" RelativePanel.AlignRightWithPanel="True" RelativePanel.RightOf="playList"
                           ItemClick="videoList_ItemClick" 
                           IsItemClickEnabled="True" 
                           IsDoubleTapEnabled="True" 
+                          CanDragItems="True"
                           DoubleTapped="videoList_DoubleTapped" 
-                          RightTapped="videoList_RightTapped">
+                          RightTapped="videoList_RightTapped" DragItemsStarting="videoList_DragItemsStarting">
                     <ListView.Resources>
                         <MenuFlyout x:Name="videoListMenuFlyout">
                             <MenuFlyoutItem x:Name="rename_Video" Text="Rename" Click="rename_Video_Click"/>
